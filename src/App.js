@@ -5,10 +5,9 @@ import Token from './artifacts/contracts/Token.sol/Token.json';
 import './App.css';
 
 //enter address here
-const greeterAddress = ""
+const greeterAddress = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"
 
 function App () {
-  const [ greeting, setGreetingValue ] = useState( '' )
   const [ userAddress, setUserAddress ] = useState( '' )
   const [ amount, setAmount ] = useState( 0 )
 
@@ -38,51 +37,12 @@ function App () {
     }
   }
 
-  async function fetchGreeting () {
-    if ( typeof window.ethereum !== 'undefined' ) {
-      const provider = new ethers.providers.Web3Provider( window.ethereum );
-      const contract = new ethers.Contract( greeterAddress, Greeter.abi, provider );
-
-      try {
-        const data = await contract.greet();
-        console.log( data );
-      } catch ( err ) {
-        console.log( err );
-      }
-    } else {
-      alert( 'Please install MetaMask' );
-    }
-  }
-
-  async function setGreeting () {
-    if ( !greeting ) {
-      return;
-    }
-    if ( typeof window.ethereum !== 'undefined' ) {
-      await requestAccount();
-      const provider = new ethers.providers.Web3Provider( window.ethereum );
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract( greeterAddress, Greeter.abi, signer );
-      const transaction = await contract.setGreeting( greeting );
-      setGreetingValue( '' );
-      await transaction.wait();
-      fetchGreeting();
-    }
-  }
-
-
   return (
     <div className="App">
-      <button onClick={ fetchGreeting }>Fetch Greeting</button>
-      <button onClick={ setGreeting }>set Greeting</button>
-      <input type="text" placeholder="set greeting" value={ greeting } onChange={ ( e ) => setGreetingValue( e.target.value ) } />
-
-      <br />
       <button onClick={ getBalance }>balance</button>
       <button onClick={ sendBalance }>send Balance</button>
       <input type="text" placeholder="send amount" onChange={ ( e ) => setAmount( e.target.value ) } />
       <input type="text" placeholder="send to" onChange={ ( e ) => setUserAddress( e.target.value ) } />
-
     </div>
   );
 }
