@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ethers } from 'ethers';
 import Token from './artifacts/contracts/Token.sol/Token.json';
 import './App.css';
+import Chessboard from './components/chessboard';
 
 //replace address here
 // the contract was created with the following address
@@ -34,9 +35,7 @@ function App () {
 
   return (
     <div className="App">
-      <button onClick={ sendBalance }>send Balance</button>
-      <input type="text" placeholder="send amount in eths" onChange={ ( e ) => setAmount( e.target.value ) } />
-      <input type="text" placeholder="send to" onChange={ ( e ) => setUserAddress( e.target.value ) } />
+      <Chessboard />
     </div>
   );
 }
