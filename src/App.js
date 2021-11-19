@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
-import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json';
 import Token from './artifacts/contracts/Token.sol/Token.json';
 import './App.css';
 
-//enter address here
+//replace address here
+// the contract was created with the following address
 const greeterAddress = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"
 
 function App () {
