@@ -5,7 +5,7 @@ import './App.css';
 
 //replace address here
 // the contract was created with the following address
-const greeterAddress = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"
+//const greeterAddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
 
 function App () {
   const [ userAddress, setUserAddress ] = useState( '' )
@@ -15,33 +15,27 @@ function App () {
     await window.ethereum.request( { method: "eth_requestAccounts" } )
   }
 
-  async function getBalance () {
-    if ( typeof window.ethereum !== 'undefined' ) {
-      const account = await window.ethereum.request( { method: "eth_requestAccounts" } );
-      const provider = new ethers.providers.Web3Provider( window.ethereum );
-      const contract = new ethers.Contract( greeterAddress, Token.abi, provider )
-      const balance = await contract.balanceOf( account )
-      console.log( balance.toString() );
-    }
-  }
-
   async function sendBalance () {
     if ( typeof window.ethereum !== 'undefined' ) {
       await requestAccount();
       const provider = new ethers.providers.Web3Provider( window.ethereum );
       const signer = provider.getSigner();
-      const contract = new ethers.Contract( greeterAddress, Token.abi, signer );
-      const transaction = await contract.transfer( userAddress, amount )
-      await transaction.wait()
-      console.log( `${ amount } eth sent to ${ userAddress }` )
+      //const contract = new ethers.Contract( greeterAddress, Token.abi, signer );
+      //const transaction = await contract.transfer( userAddress, amount )
+      //await transaction.wait()
+      const tx = await signer.sendTransaction( {
+        to: userAddress,
+        value: ethers.utils.parseEther( amount )
+      } );
+      await tx.wait();
+      alert( `${ amount } eth sent to ${ userAddress }` )
     }
   }
 
   return (
     <div className="App">
-      <button onClick={ getBalance }>balance</button>
       <button onClick={ sendBalance }>send Balance</button>
-      <input type="text" placeholder="send amount" onChange={ ( e ) => setAmount( e.target.value ) } />
+      <input type="text" placeholder="send amount in eths" onChange={ ( e ) => setAmount( e.target.value ) } />
       <input type="text" placeholder="send to" onChange={ ( e ) => setUserAddress( e.target.value ) } />
     </div>
   );
